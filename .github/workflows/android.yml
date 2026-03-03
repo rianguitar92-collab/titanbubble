@@ -1,0 +1,25 @@
+name: Build APK
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - run: npm install -g cordova
+    - run: npm install
+    - run: cordova platform add android
+    - run: cordova build android
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: TitanBubble-APK
+        path: platforms/android/app/build/outputs/apk/debug/*.apk
